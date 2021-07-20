@@ -20,3 +20,7 @@ public static long[] nextLargerElement(long[] arr, int n) {
     }
     return result;
 } 
+
+
+Time : O(n^2)
+Space: O(1)
