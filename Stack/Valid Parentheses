@@ -21,3 +21,6 @@ public boolean isValid(String s) {
     }
     return stack.empty();
 }
+
+Time : O(n)
+Space: O(n)
