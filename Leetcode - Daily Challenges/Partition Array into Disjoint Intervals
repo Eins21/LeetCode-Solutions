@@ -9,6 +9,7 @@ left has the smallest possible size.
 Return the length of left after such a partitioning.  It is guaranteed that such a partitioning exists.
 
 *******************************************************************************************************
+Approach 1 :
 
 public int partitionDisjoint(int[] nums) {
 
@@ -36,3 +37,27 @@ public int partitionDisjoint(int[] nums) {
 
 Time : O(n)
 Space : O(n)
+
+Approach 2 :
+
+Algo:
+1.Suppose the original left subarray is from 0 to partitionIdx, the max value of that is localMax. 
+2.If it is a valid partition, every value from partitionIdx + 1 to end should be >= localMax. 
+3.But if we find a value in the right part, a[i], is smaller than localMax, which means the partition is not correct and we have to incorporate a[i] to form the left subarray. 
+4.So the partitionIdx is set to be i, and we have to recalculate the max value of the new left subarray.(recorded in max)
+
+public int partitionDisjoint1(int[] nums) {
+    int leftMax = nums[0], partition = 0, globalMax = leftMax;
+    for (int i = 1; i < nums.length; i++) {
+        if (leftMax > nums[i]) {
+            partition = i;
+            leftMax = globalMax;
+        } else {
+            globalMax = Math.max(globalMax, nums[i]);
+        }
+    }
+    return partition + 1;
+}
+
+Time : O(n)
+Space : O(1)
