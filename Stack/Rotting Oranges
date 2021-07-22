@@ -1,0 +1,64 @@
+
+source : https://leetcode.com/problems/rotting-oranges/
+*************************************************************************************************************************
+You are given an m x n grid where each cell can have one of three values:
+
+0 representing an empty cell,
+1 representing a fresh orange, or
+2 representing a rotten orange.
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
+
+*************************************************************************************************************************
+
+
+public int orangesRotting(int[][] grid) {
+
+    Queue<int[]> queue = new LinkedList<>();
+    int numberOfFreshOranges = 0, numberOfDays = 0;
+
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[0].length; j++) {
+        if (grid[i][j] == 2) {
+          queue.offer(new int[] { i, j });
+        } else if (grid[i][j] == 1) {
+          numberOfFreshOranges++;
+        }
+
+      }
+    }
+
+    if (numberOfFreshOranges == 0)
+      return 0;
+
+    int[][] directionArr = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+    while (!queue.isEmpty()) {
+      numberOfDays++;
+      int size = queue.size();
+      for (int i = 0; i < size; i++) {
+        int[] arr = queue.poll();
+        for (int[] direction : directionArr) {
+          int a = arr[0] + direction[0];
+          int b = arr[1] + direction[1];
+          if (isWithinBoundary(a, b, grid.length, grid[0].length) && grid[a][b] == 1) {
+            grid[a][b] = 2;
+            queue.offer(new int[] { a, b });
+            numberOfFreshOranges--;
+          }
+        }
+      }
+
+    }
+
+    return numberOfFreshOranges == 0 ? numberOfDays - 1 : -1;
+  }
+
+  private boolean isWithinBoundary(int i, int j, int rowLen, int colLen) {
+    if (i >= 0 && i < rowLen && j >= 0 && j < colLen)
+      return true;
+    return false;
+  }
+  
+  Time : O(rows*columns)
+  Space : O(rows*columns)
