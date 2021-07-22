@@ -1,0 +1,78 @@
+class LRUCache {
+
+	class Node {
+		int key, value;
+		Node next;
+		Node prev;
+
+		Node(int key, int val) {
+			this.key = key;
+			this.value = val;
+		}
+	}
+
+	void addNode(Node node) {
+		Node last = rear.prev;
+		last.next = node;
+		node.prev = last;
+		rear.prev = node;
+		node.next = rear;
+	}
+
+	void removeNode(Node node) {
+		Node before = node.prev, after = node.next;
+		before.next = after;
+		after.prev = before;
+	}
+
+	Node front, rear;
+	int capacity, count;
+	HashMap<Integer, Node> map = new HashMap<Integer, Node>();
+
+	LRUCache(int size) {
+		capacity = size;
+		count = 0;
+		front = new Node(0, 0);
+		rear = new Node(0, 0);
+		front.next = rear;
+		rear.prev = front;
+	}
+
+	void update(Node node) {
+		removeNode(node);
+		addNode(node);
+	}
+
+	int get(int key) {
+		Node node = map.get(key);
+		if (node == null)
+			return -1;
+		update(node);
+		return node.value;
+	}
+
+	void put(int key, int value) {
+		Node node = map.get(key);
+		if (node == null) {
+			node = new Node(key, value);
+			map.put(key, node);
+			count++;
+			if (count > capacity) {
+				map.remove(front.next.key);
+				removeNode(front.next);
+			}
+			addNode(node);
+		} else {
+			node.value = value;
+			update(node);
+		}
+
+	}
+
+}
+
+Time - O(1) for get and put operations
+Space - O(LRU Cache size)
+
+Doubly linked list - for quick removal
+HashMap - for quick retrieval
