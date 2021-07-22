@@ -1,3 +1,9 @@
+
+*********************************
+Implement Queue using two stacks
+
+*********************************
+
 class MyQueue {
 
 	/** Initialize your data structure here. */
