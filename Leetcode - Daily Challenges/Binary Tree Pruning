@@ -1,0 +1,19 @@
+
+source : https://leetcode.com/problems/binary-tree-pruning/
+
+
+public TreeNode pruneTree(TreeNode root) {
+    return pruneTreeUtil(root) ? null : root;
+}
+
+boolean pruneTreeUtil(TreeNode root) {
+  if (root == null)
+    return true;
+  boolean leftCotainsZero = pruneTreeUtil(root.left);
+  boolean rightCotainsZero = pruneTreeUtil(root.right);
+
+  if (leftCotainsZero == true) root.left = null;
+  if (rightCotainsZero == true) root.right = null;
+
+  return root.val == 0 && leftCotainsZero && rightCotainsZero;
+ }
