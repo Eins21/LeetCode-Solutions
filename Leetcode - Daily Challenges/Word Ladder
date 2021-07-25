@@ -14,41 +14,41 @@ Approach 1 - BFS:
 
 public int ladderLength(String beginWord, String endWord, List<String> wordList) {
 
-		HashSet<String> set = new HashSet<>();
-		for (String word : wordList) {
-			set.add(word);
-		}
-		Queue<String> queue = new LinkedList<>();
-		queue.add(beginWord);
-
-		int ladderLength = 0;
-		while (!queue.isEmpty()) {
-			int queueSize = queue.size();
-			for (int i = 0; i < queueSize; i++) {
-				String currentWord = queue.poll();
-				if (currentWord.equals(endWord)) {
-					return ladderLength + 1;
-				}
-				set.remove(currentWord);
-
-				char[] currentWordCharArr = currentWord.toCharArray();
-				for (int j = 0; j < currentWordCharArr.length; j++) {
-					char charToBeReplaced = currentWordCharArr[j];
-					for (int k = 0; k < 26; k++) {
-						currentWordCharArr[j] = (char) ('a' + k);
-						String modifiedCurrentWord = new String(currentWordCharArr);
-						if (set.contains(modifiedCurrentWord) && charToBeReplaced != currentWordCharArr[j])
-							queue.add(modifiedCurrentWord);
-					}
-					currentWordCharArr[j] = charToBeReplaced;
-				}
-
-			}
-			ladderLength++;
-		}
-
-		return 0;
+	HashSet<String> set = new HashSet<>();
+	for (String word : wordList) {
+		set.add(word);
 	}
+	Queue<String> queue = new LinkedList<>();
+	queue.add(beginWord);
+
+	int ladderLength = 0;
+	while (!queue.isEmpty()) {
+	   int queueSize = queue.size();
+	   for (int i = 0; i < queueSize; i++) {
+		String currentWord = queue.poll();
+		if (currentWord.equals(endWord)) {
+			return ladderLength + 1;
+		}
+		set.remove(currentWord);
+
+		char[] currentWordCharArr = currentWord.toCharArray();
+		for (int j = 0; j < currentWordCharArr.length; j++) {
+			char charToBeReplaced = currentWordCharArr[j];
+			for (int k = 0; k < 26; k++) {
+				currentWordCharArr[j] = (char) ('a' + k);
+				String modifiedCurrentWord = new String(currentWordCharArr);
+				if (set.contains(modifiedCurrentWord) && charToBeReplaced != currentWordCharArr[j])
+					queue.add(modifiedCurrentWord);
+			}
+			currentWordCharArr[j] = charToBeReplaced;
+		}
+
+		}
+		ladderLength++;
+	}
+
+	return 0;
+}
   
   Time :
   Space : 
