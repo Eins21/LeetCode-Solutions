@@ -1,0 +1,283 @@
+
+source : https://www.issacc.com/2sum-3sum-4sum-xsum/
+
+************************************************************
+2 sum, 3 sum, 4 sum and its followups 
+************************************************************
+
+// HashMap approach
+public int[] twoSum(int[] nums, int target) {
+  int[] res = new int[2];
+  if (nums == null || nums.length == 0) {
+    return res;
+  }
+  Map<Integer, Integer> map = new HashMap<>();
+  for (int i = 0; i < nums.length; i++) {
+    if (map.get(target - nums[i]) != null) {
+      res[0] = map.get(target - nums[i]);
+      res[1] = i;
+      return res;
+    }
+    map.put(nums[i], i);
+  }
+  return res;
+}
+
+
+// Two pointer approach if the array is sorted
+public int[] twoSumIfSorted(int[] nums, int target) {
+  int[] res = new int[2];
+  if (nums == null || nums.length == 0) {
+    return res;
+  }
+  int left = 0, right = nums.length - 1;
+  while (left < right) {
+    if (nums[left] + nums[right] == target) {
+      res[0] = left + 1;
+      res[1] = right + 1;
+      return res;
+    }
+    if (nums[left] + nums[right] < target) {
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return res;
+}
+
+
+// Number of pairs in the array such that their sum is less than or equal to a
+// specific target number.
+public int twoSumLessThanOrEqualToTarget(int[] nums, int target) {
+
+  if (nums == null || nums.length < 2) {
+    return 0;
+  }
+  Arrays.sort(nums);
+  int count = 0;
+  int left = 0, right = nums.length - 1;
+  while (left < right) {
+    if (nums[left] + nums[right] <= target) {
+      count += right - left;
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return count;
+}
+
+
+// sum of the two integers such that the sum is closest to target
+public int twoSumClosest(int[] nums, int target) {
+
+  if (nums == null || nums.length < 2) {
+    return 0;
+  }
+  Arrays.sort(nums);
+  int bestSum = nums[0] + nums[1];
+  int left = 0, right = nums.length - 1;
+  while (left < right) {
+    int sum = nums[left] + nums[right];
+    if (Math.abs(target - sum) < Math.abs(target - bestSum)) {
+      bestSum = sum;
+    }
+    if (sum < target) {
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return bestSum;
+}
+
+
+// NUmber of Unique pairs in the array such that their sum is equal to a
+// specific target number.
+public int twoSumUniquePairs(int[] nums, int target) {
+
+  if (nums == null || nums.length < 2) {
+    return 0;
+  }
+  Arrays.sort(nums);
+  int count = 0;
+  int left = 0, right = nums.length - 1;
+  while (left < right) {
+    if (nums[left] + nums[right] == target) {
+      count++;
+      left++;
+      right--;
+      // moving left pointer to right to skip duplicates
+      while (left < right && nums[left] == nums[left - 1]) {
+        left++;
+      }
+      // moving right pointer to left to skip duplicates
+      while (left < right && nums[right] == nums[right + 1]) {
+        right--;
+      }
+    } else if (nums[left] + nums[right] < target) {
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return count;
+}
+
+
+// Given an array nums of n integers, find all unique triplets in the array
+// which gives the sum of zero
+public List<List<Integer>> threeSumUniquePairs(int[] nums) {
+
+  List<List<Integer>> results = new ArrayList<>();
+  if (nums == null || nums.length < 3) {
+    return results;
+  }
+  Arrays.sort(nums);
+  for (int i = 0; i < nums.length - 2; i++) {
+    // skip duplicates
+    if (i > 0 && nums[i] == nums[i - 1]) {
+      continue;
+    }
+
+    int left = i + 1, right = nums.length - 1;
+
+    while (left < right) {
+
+      if (nums[i] + nums[left] + nums[right] == 0) {
+        List<Integer> result = new ArrayList<>();
+        result.add(nums[i]);
+        result.add(nums[left]);
+        result.add(nums[right]);
+        results.add(result);
+
+        left++;
+        right--;
+
+        // moving left pointer to right to skip duplicates
+        while (left < right && nums[left] == nums[left - 1]) {
+          left++;
+        }
+        // moving right pointer to left to skip duplicates
+        while (left < right && nums[right] == nums[right + 1]) {
+          right--;
+        }
+
+      } else if (nums[i] + nums[left] + nums[right] < 0) {
+        left++;
+      } else {
+        right--;
+      }
+    }
+  }
+  return results;
+}
+
+
+// Find three integers in nums such that the sum is closest to target
+public int threeSumClosest(int[] nums, int target) {
+
+  if (nums == null || nums.length < 3) {
+    return -1;
+  }
+  Arrays.sort(nums);
+  int bestSum = nums[0] + nums[1] + nums[2];
+  for (int i = 0; i < nums.length - 2; i++) {
+    int left = i + 1, right = nums.length - 1;
+    while (left < right) {
+      int sum = nums[i] + nums[left] + nums[right];
+      if (Math.abs(target - sum) < Math.abs(target - bestSum)) {
+        bestSum = sum;
+      }
+      if (sum < target) {
+        left++;
+      } else {
+        right--;
+      }
+    }
+  }
+
+  return bestSum;
+}
+
+
+// Given an array nums of n integers and an integer target, find all unique
+// quadruplets in the array which gives the sum of target.
+public List<List<Integer>> fourSum(int[] nums, int target) {
+
+  List<List<Integer>> results = new ArrayList<>();
+  if (nums == null || nums.length < 4) {
+    return results;
+  }
+  Arrays.sort(nums);
+  for (int i = 0; i < nums.length - 3; i++) {
+    // skip duplicates
+    if (i > 0 && nums[i] == nums[i - 1]) {
+      continue;
+    }
+    for (int j = i + 1; j < nums.length - 2; j++) {
+      // skip duplicates
+      if (j > i + 1 && nums[j] == nums[j - 1]) {
+        continue;
+      }
+      int left = j + 1, right = nums.length - 1;
+      while (left < right) {
+
+        if (nums[i] + nums[j] + nums[left] + nums[right] == target) {
+          List<Integer> result = new ArrayList<>();
+          result.add(nums[i]);
+          result.add(nums[j]);
+          result.add(nums[left]);
+          result.add(nums[right]);
+          results.add(result);
+
+          left++;
+          right--;
+
+          // moving left pointer to right to skip duplicates
+          while (left < right && nums[left] == nums[left - 1]) {
+            left++;
+          }
+          // moving right pointer to left to skip duplicates
+          while (left < right && nums[right] == nums[right + 1]) {
+            right--;
+          }
+        } else if (nums[i] + nums[j] + nums[left] + nums[right] < target) {
+          left++;
+        } else {
+          right--;
+        }
+      }
+    }
+  }
+  return results;
+}
+
+
+// Given four lists A, B, C, D of integer values, compute how many tuples (i, j,
+// k, l) there are such that A[i] + B[j] + C[k] + D[l] is zero
+public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+
+  Map<Integer, Integer> map = new HashMap<>();
+  int count = 0;
+  for (int i = 0; i < A.length; i++) {
+    for (int j = 0; j < B.length; j++) {
+      int sum = A[i] + B[j];
+      if (map.containsKey(sum)) {
+        map.put(sum, map.get(sum) + 1);
+      } else {
+        map.put(sum, 1);
+      }
+    }
+  }
+  for (int i = 0; i < C.length; i++) {
+    for (int j = 0; j < D.length; j++) {
+      int sum = -(C[i] + D[j]);
+      if (map.containsKey(sum)) {
+        count += map.get(sum);
+      }
+    }
+  }
+  return count;
+}
