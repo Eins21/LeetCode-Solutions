@@ -1,0 +1,181 @@
+
+source : https://leetcode.com/problems/map-sum-pairs/
+
+*********************************************************************************************************************************************************************
+Implement the MapSum class:
+MapSum() - Initializes the MapSum object.
+void insert(String key, int val) - Inserts the key-val pair into the map. If the key already existed, the original key-value pair will be overridden to the new one.
+int sum(string prefix) - Returns the sum of all the pairs' value whose key starts with the prefix.
+
+**********************************************************************************************************************************************************************
+
+Solution 1:
+
+class TrieNode {
+    
+	boolean isWord;
+	TrieNode[] children = new TrieNode[26];
+	TrieNode() {}
+	
+}
+
+public class Trie {
+
+  TrieNode root;
+  public Trie() {
+    this.root = new TrieNode();
+  }
+
+  public void insert(String word) {
+      TrieNode tempNode = root;
+    for(int i=0;i<word.length();i++) {
+      char ch = word.charAt(i);
+      if(tempNode.children[ch-'a'] == null) {
+        tempNode.children[ch-'a'] = new TrieNode();
+      }
+      tempNode = tempNode.children[ch-'a'];
+    }
+    tempNode.isWord=true;
+  }
+
+  public boolean search(String word) {
+      TrieNode tempNode = root;
+    for(int i=0;i<word.length();i++) {
+      char ch = word.charAt(i);
+      if(tempNode.children[ch-'a'] == null) {
+        return false;
+      }
+      tempNode = tempNode.children[ch-'a'];
+    }
+    return tempNode.isWord;
+  }
+
+  public TrieNode startsWith(String prefix) {
+      TrieNode tempNode = root;
+    for(int i=0;i<prefix.length();i++) {
+      char ch = prefix.charAt(i);
+      if(tempNode.children[ch-'a'] == null) {
+        return null;
+      }
+      tempNode = tempNode.children[ch-'a'];
+    }
+    return tempNode;
+  }
+
+class NodeAndQueue{
+
+    TrieNode prefixNode;
+    String prefixWord;
+    NodeAndQueue(TrieNode prefixNode,String prefixWord){
+      this.prefixNode=prefixNode;
+      this.prefixWord=prefixWord;
+    }
+
+  }
+public int startsWithSum(TrieNode prefixNode, HashMap<String, Integer> mapSum, String prefixWord) {
+      if(prefixNode == null)
+        return 0;
+      int sum = 0;
+  Queue<NodeAndQueue> queue = new LinkedList<>();
+  queue.add(new NodeAndQueue(prefixNode,prefixWord));
+
+  while (!queue.isEmpty()) {
+    NodeAndQueue nodeandqueue = queue.poll();
+    TrieNode node = nodeandqueue.prefixNode;
+    String prefix_word = nodeandqueue.prefixWord;
+    if (node.isWord) {
+      sum += mapSum.get(prefix_word);
+    }
+    for (int i = 0; i < 26; i++) {
+      char ch = (char) ('a'+i);
+      if (node.children[ch-'a'] != null) {
+        queue.add(new NodeAndQueue(node.children[ch-'a'],prefix_word+ ch));
+      }
+
+    }
+
+  }
+
+  return sum;
+}
+}
+class MapSum {
+
+Trie trie;
+HashMap<String, Integer> mapSum;
+  public MapSum() {
+      mapSum = new HashMap<>();
+    trie = new Trie();
+  }
+
+  public void insert(String key, int val) {
+      mapSum.put(key, val);
+      trie.insert(key);
+  }
+
+  public int sum(String prefix) {
+      return trie.startsWithSum(trie.startsWith(prefix), mapSum, prefix);
+  }
+}
+
+
+Solution -2 :
+
+class TrieNode {
+    TrieNode[] child = new TrieNode[26];
+    int sum = 0; // Store the sum of values of all strings go through this node.
+}
+
+class MapSum { // 10 ms, faster than 100.00%
+    HashMap<String, Integer> map = new HashMap<>();
+    TrieNode trieRoot = new TrieNode();
+
+    public void insert(String key, int val) {
+        int diff = val - map.getOrDefault(key, 0);
+        TrieNode curr = trieRoot;
+        for (char c : key.toCharArray()) {
+            c -= 'a';
+            if (curr.child[c] == null) curr.child[c] = new TrieNode();
+            curr = curr.child[c];
+            curr.sum += diff;
+        }
+        map.put(key, val);
+    }
+    public int sum(String prefix) {
+        TrieNode curr = trieRoot;
+        for (char c : prefix.toCharArray()) {
+            c -= 'a';
+            if (curr.child[c] == null) return 0;
+            curr = curr.child[c];
+        }
+        return curr.sum;
+    }
+}
+
+Complexity
+
+Time:
+insert: O(K), where K <= 50 is length of key string.
+sum: O(P), where P <= 50 is length of prefix string.
+
+Space: 
+O(T), where T is the total of nodes after inserting all key string, T <= total characters of key strings.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
