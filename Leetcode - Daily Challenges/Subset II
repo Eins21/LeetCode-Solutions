@@ -27,7 +27,7 @@ public List<List<Integer>> subsets(int[] nums) {
   return result;
 }
 		
-Time: O(2^N * N)
+Time: O(2^N * N)- 2N(genrate all subsets), N(copy the subset to result list)
 Space: O(2^N)		
 
 Backtracking:
@@ -50,7 +50,7 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] n
   }
 } 
 
-Time: O(2^N * N)
+Time: O(2^N * N)- 2N(genrate all subsets), N(copy the subset to result list)
 Space: O(2^N)
 
 Bit Masking:
@@ -72,5 +72,5 @@ public List<List<Integer>> subsets(int[] nums) {
   return output;
 }
 
-Time: O(2^N * N)
+Time: O(2^N * N) - 2N(genrate all subsets), N(copy the subset to result list)
 Space: O(2^N)
