@@ -36,7 +36,7 @@ List<List<Integer>> levelOrderUtil(Node root, List<List<Integer>> result) {
 
 Complexity
 
-Time: O(N), where N <= 10^4 is number of nodes in the tree.
+Time: O(N), where N is number of nodes in the tree.
 Extra Space (without counting output as space): O(N), this is the memory to store elements in the queue. At most, the queue will have 2 layers of the tree on it at any given time.
 In the best case, each level has only 1 node.
 In the worst case, for example in balanced tree, there is about N/2 nodes in the lowest level.
@@ -59,7 +59,7 @@ void levelOrderUtil(Node root,List<List<Integer>> result,int level){
 
 Complexity
 
-Time: O(N), where N <= 10^4 is number of nodes in the tree.
+Time: O(N), where N is number of nodes in the tree.
 Extra Space (without counting output as space): O(H), where H <= 1000 is height of the tree. This is the memory for recursion stack.
 In the best case, it's a balanced tree, the height is logN.
 In the worst case, each level has only 1 node, the height is H.
