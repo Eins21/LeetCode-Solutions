@@ -60,6 +60,6 @@ void levelOrderUtil(Node root,List<List<Integer>> result,int level){
 Complexity
 
 Time: O(N), where N is number of nodes in the tree.
-Extra Space (without counting output as space): O(H), where H <= 1000 is height of the tree. This is the memory for recursion stack.
+Extra Space (without counting output as space): O(H), where H is height of the tree. This is the memory for recursion stack.
 In the best case, it's a balanced tree, the height is logN.
 In the worst case, each level has only 1 node, the height is H.
