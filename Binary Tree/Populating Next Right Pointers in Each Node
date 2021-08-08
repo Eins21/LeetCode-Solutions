@@ -1,0 +1,106 @@
+
+source : https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+************************************************************************************************************************************************************
+You are given a perfect binary tree where all leaves are on the same level, and every parent has two children. The binary tree has the following definition:
+
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+Initially, all next pointers are set to NULL.
+
+************************************************************************************************************************************************************
+
+Approach 1:  
+
+public Node connect(Node root) {
+ connectBFSUtil(root);
+ return root;
+}
+
+void connectBFSUtil(Node root) {
+ if (root == null) return;
+Queue<Node> queue = new LinkedList<>();
+queue.add(root);
+
+while (!queue.isEmpty()) {
+  int size = queue.size();
+  Node prev = null;
+  for (int i = 0; i < size; i++) {
+    Node tempNode = queue.remove();
+    if (prev == null) 
+      prev = tempNode;
+    else {
+      prev.next = tempNode;
+      prev = tempNode;
+    }
+    if (tempNode.left != null) queue.add(tempNode.left);
+    if (tempNode.right != null) queue.add(tempNode.right);
+  }
+}
+}
+
+Time : O(N)
+Space : O(N)
+
+Approach 2:
+
+public Node connect(Node root) {
+    HashMap<Integer,Node> map = new HashMap<Integer,Node>();
+    connectDFSUtil(root,0,map);   
+    return root;
+}
+
+private void connectDFSUtil(Node curr, int level,HashMap<Integer,Node> map) {
+if (curr == null) return;
+
+    if(!map.containsKey(level))
+        map.put(level,curr);
+    else{
+       map.get(level).next = curr; 
+       map.put(level,curr); 
+    }    
+connectDFSUtil(curr.left, level + 1,map);
+connectDFSUtil(curr.right, level + 1,map);
+}
+
+Time : O(N)
+Space : O(N)
+
+Approach 3:
+
+public Node connect(Node root) {
+    if(root == null)
+       return root;
+    if(root.left != null) root.left.next = root.right;
+    if(root.right != null && root.next != null) root.right.next = root.next.left;
+    connect(root.left);
+    connect(root.right);
+    return root;  
+}
+
+Time : O(N)
+Space : O(1)
+
+Approach 4:
+
+public Node connect(Node root) {
+ Node level_start=root;
+     while(level_start!=null){
+         Node cur=level_start;
+         while(cur!=null){
+             if(cur.left!=null) cur.left.next=cur.right;
+             if(cur.right!=null && cur.next!=null) cur.right.next=cur.next.left;
+
+             cur=cur.next;
+         }
+         level_start=level_start.left;
+     } 
+     return root;
+}
+
+Time : O(N)
+Space : O(1)
