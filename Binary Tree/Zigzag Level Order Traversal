@@ -1,0 +1,59 @@
+
+Source : 
+*******************************************************************************************************
+Given the root of a binary tree, return the zigzag level order traversal of its nodes' values.
+(i.e., from left to right, then right to left for the next level and alternate between).
+
+*******************************************************************************************************
+
+BFS:
+public List<List<Integer>> zigzagLevelOrderBFS(TreeNode root) {
+  List<List<Integer>> result = new ArrayList<List<Integer>>();
+  return zigzagLevelOrderBFSUtil(root, result);
+}
+
+List<List<Integer>> zigzagLevelOrderBFSUtil(TreeNode root, List<List<Integer>> result) {
+
+  if (root == null)
+    return result;
+  Queue<TreeNode> queue = new LinkedList<>();
+  queue.add(root);
+
+  boolean flag = false;
+  while (!queue.isEmpty()) {
+    int size = queue.size();
+    List<Integer> currList = new ArrayList<Integer>();
+    for (int i = 0; i < size; i++) {
+      TreeNode tempNode = queue.remove();
+      if (flag) currList.add(0, tempNode.val);
+      else currList.add(tempNode.val);
+      if (tempNode.left != null) queue.add(tempNode.left);
+      if (tempNode.right != null) queue.add(tempNode.right);
+    }
+    result.add(currList);
+    flag = !flag;
+  }
+  return result;
+}
+
+Time : O(N)
+Space : O(N) - At max two level of nodes present in queue. In worst case complete binary tree there will be N/2 leaf nodes.
+public List<List<Integer>> zigzagLevelOrderDFS(TreeNode root) {
+  List<List<Integer>> result = new ArrayList<>();
+  zigzagLevelOrderDFSUtil(root, result, 0);
+  return result;
+}
+
+private void zigzagLevelOrderDFSUtil(TreeNode curr, List<List<Integer>> result, int level) {
+  if (curr == null) return;
+  if (result.size() == level) result.add(new LinkedList<>());
+  if (level % 2 == 0) 
+    result.get(level).add(curr.val);
+  else
+    result.get(level).add(0, curr.val);
+  zigzagLevelOrderDFSUtil(curr.left, result, level + 1);
+  zigzagLevelOrderDFSUtil(curr.right, result, level + 1);
+}
+
+Time : O(N)
+Space : O(H) - In worst case H will be N(Skew tree).
