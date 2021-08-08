@@ -1,0 +1,54 @@
+
+source : https://leetcode.com/problems/validate-binary-search-tree/
+****************************************************************************************
+Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+
+A valid BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+
+*****************************************************************************************
+
+
+Recursive Idea : For every node maximum value in the left subtree should be less than its value and minimum value in the right subtree should be greater than its value.
+
+public boolean isValidBST(TreeNode root) {
+    return isValidBSTUtil(root,null,null);
+}
+
+boolean isValidBSTUtil(TreeNode root,Integer min,Integer max){
+   if (root == null) return true;
+   if ((min != null && root.val <= min) || (max != null && root.val >= max)) return false;
+   return isValidBSTUtil(root.left, min, root.val) && isValidBSTUtil(root.right, root.val, max);
+}
+
+Time: O(n)
+Space : O(H) H - height of the tree. In worst case hieght will be N.
+
+Iterative Inorder traversal Idea: 
+
+1) Do In-Order Traversal of the given tree and store the result in a temp array. 
+3) Check if the temp array is sorted in ascending order, if it is, then the tree is BST.
+We can avoid the use of a Auxiliary Array. While doing In-Order traversal, we can keep track of previously visited node.
+
+public boolean isValidBST(TreeNode root) {
+   if (root == null) return true;
+   Stack<TreeNode> stack = new Stack<>();
+   TreeNode pre = null;
+   while (root != null || !stack.isEmpty()) {
+      while (root != null) {
+         stack.push(root);
+         root = root.left;
+      }
+      root = stack.pop();
+      if(pre != null && root.val <= pre.val) return false;
+      pre = root;
+      root = root.right;
+   }
+   return true;
+}
+
+Time: O(n)
+Space : O(H) H - height of the tree. In worst case hieght will be N.
