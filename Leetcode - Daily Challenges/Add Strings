@@ -30,4 +30,4 @@ public String addStrings(String num1, String num2) {
       return sb.toString();
 }
 
-Time : O(n1 + n2),Space: O(n1+n2) - Where n1 and n2 are lengths of the strings
+Time : O(n1 + n2),Space: O(max(n1,n2)) - Where n1 and n2 are lengths of the strings
