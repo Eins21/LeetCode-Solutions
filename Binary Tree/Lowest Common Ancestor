@@ -1,0 +1,53 @@
+
+source : https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+******************************************************************************************************************************
+Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
+
+According to the definition of LCA on Wikipedia: 
+“The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants
+(where we allow a node to be a descendant of itself).”
+******************************************************************************************************************************
+
+Binary Tree:
+
+Recursive:
+
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if(root == null) return null;
+    if(root == p || root == q) return root;
+    TreeNode left = lowestCommonAncestor(root.left,p,q);
+    TreeNode right = lowestCommonAncestor(root.right,p,q);
+
+    if(left != null && right !=null) return root;
+    if(left == null && right ==null) return null;
+    return left != null ? left : right;
+}
+
+Binary Search Tree:
+
+Recursive:
+
+ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if(root.val > Math.max(p.val,q.val))
+       return lowestCommonAncestor(root.left,p,q); 
+    else if(root.val < Math.min(p.val,q.val))
+       return lowestCommonAncestor(root.right,p,q); 
+    else
+        return root;
+}
+
+Iterative:
+
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    int small = Math.min(p.val, q.val);
+    int large = Math.max(p.val, q.val);
+    while (root != null) {
+        if (root.val > large) 
+            root = root.left;
+        else if (root.val < small)
+            root = root.right;
+        else
+            return root;
+    }
+    return null;
+}
