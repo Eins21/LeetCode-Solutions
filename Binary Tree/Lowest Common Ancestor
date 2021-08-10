@@ -36,6 +36,9 @@ Recursive:
         return root;
 }
 
+Time: O(H), where H is the heigh of Binary Tree.
+Space: O(H)
+
 Iterative:
 
 public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
@@ -51,3 +54,6 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
     }
     return null;
 }
+
+Time: O(H), where H is the heigh of Binary Tree.
+Space: O(1)
