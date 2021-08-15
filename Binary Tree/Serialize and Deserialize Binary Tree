@@ -1,0 +1,49 @@
+
+source : https://leetcode.com/problems/serialize-and-deserialize-binary-tree/
+**************************************************************************************************************************************************
+Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, 
+or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+
+Design an algorithm to serialize and deserialize a binary tree. 
+There is no restriction on how your serialization/deserialization algorithm should work. 
+You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
+
+****************************************************************************************************************************************************
+
+public String serialize(TreeNode root) {
+  StringBuilder data = new StringBuilder();
+  return serializeUtil(root, data);
+}
+
+String serializeUtil(TreeNode root, StringBuilder data) {
+  if (root == null) {
+    data.append("null ");
+    return null;
+  }
+  data.append(root.val + " ");
+  serializeUtil(root.left, data);
+  serializeUtil(root.right, data);
+  return data.toString();
+}
+
+public TreeNode deserialize(String data) {
+  if (data == null || data.isEmpty()) return null;
+  String[] arr = data.split(" ");
+  int[] d = new int[1];
+  return deserializeUtil(arr, d);
+}
+
+TreeNode deserializeUtil(String[] arr, int[] d) {
+  if (arr[d[0]].equals("null")) {
+    d[0]++;
+    return null;
+  }
+  TreeNode node = new TreeNode(Integer.parseInt(arr[d[0]]));
+  d[0]++;
+  node.left = deserializeUtil(arr, d);
+  node.right = deserializeUtil(arr, d);
+  return node;
+}
+
+Time : O(N) - For serialize and deserialize
+Space : O(N)
