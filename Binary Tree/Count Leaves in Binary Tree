@@ -1,0 +1,26 @@
+
+
+source : https://practice.geeksforgeeks.org/problems/count-leaves-in-binary-tree/1
+*********************************************************************************************************************************************
+
+Given a Binary Tree of size N , You have to count leaves in it. For example, there are two leaves in following tree
+
+**********************************************************************************************************************************************
+
+int countLeaves(Node node) 
+{
+   return countLeavesUtil(node);
+}
+
+int countLeavesUtil(Node node){
+
+    if (node == null)
+        return 0;
+    if (node.left == null && node.right == null)
+        return 1;
+    else
+        return countLeavesUtil(node.left) + countLeavesUtil(node.right);
+}
+
+Time : O(N)
+Space : O(N)
