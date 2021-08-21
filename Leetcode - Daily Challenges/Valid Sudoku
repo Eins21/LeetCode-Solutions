@@ -1,0 +1,65 @@
+
+
+source : https://leetcode.com/problems/valid-sudoku/
+*****************************************************************************************************************************************************
+Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+Each row must contain the digits 1-9 without repetition.
+Each column must contain the digits 1-9 without repetition.
+Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+Note:
+A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+Only the filled cells need to be validated according to the mentioned rules.
+
+Approach 1 : HashSet
+
+public boolean isValidSudoku(char[][] board) {
+    int N = 9;
+    HashSet<Character>[] rowSet = new HashSet[N];
+    HashSet<Character>[] colSet = new HashSet[N];
+    HashSet<Character>[] squareSet = new HashSet[N];
+    for (int r = 0; r < N; r++) {
+        rowSet[r] = new HashSet<>();
+        colSet[r] = new HashSet<>();
+        squareSet[r] = new HashSet<>();
+    }
+    for (int r = 0; r < N; r++) {
+        for (int c = 0; c < N; c++) {
+            char val = board[r][c];
+            if (val == '.') continue;
+            int sPos = (r / 3) * 3 + c / 3;
+            if (rowSet[r].contains(val) || colSet[c].contains(val) || squareSet[sPos].contains(val))
+                return false;
+            rowSet[r].add(val);
+            colSet[c].add(val);
+            squareSet[sPos].add(val);
+        }
+    }
+    return true;
+}
+
+Time: O(N^2), where N - 9
+Space: O(N^2)
+
+Approach 2: Bitmasking
+
+public boolean isValidSudoku(char[][] board) {
+    int N = 9;
+    int[] rows = new int[N], cols = new int[N], squares = new int[N];
+    for (int r = 0; r < N; r++) {
+        for (int c = 0; c < N; c++) {
+            if (board[r][c] == '.') continue;
+            int val = board[r][c] - '0';
+            int sPos = (r / 3) * 3 + (c / 3);
+            if (getBit(rows[r], val) == 1 || getBit(cols[c], val) == 1 || getBit(squares[sPos], val) == 1)
+                return false;
+            rows[r] |= 1 << val;
+            cols[c] |= 1 << val;
+            squares[sPos] |= 1 << val;
+        }
+    }
+    return true;
+}
+int getBit(int x, int k) {
+    return (x >> k) & 1;
+}
+ 
