@@ -17,6 +17,9 @@ List<Integer> leftViewUtil(Node root, ArrayList<Integer> result, int level) {
   return result;
 }
 
+Time : O(N)
+Space : O(N)
+
 Left View - Iterative:
 
 List<Integer> leftViewIterative(Node root) {
@@ -43,6 +46,9 @@ List<Integer> leftViewUtil(Node root, ArrayList<Integer> result) {
   return result;
 }
 
+Time : O(N)
+Space : O(N)
+
 Right View - Recursive:
 
 public List<Integer> rightSideViewRecursive(TreeNode root) {
@@ -58,6 +64,9 @@ ArrayList<Integer> rightSideViewUtil(TreeNode root, ArrayList<Integer> result, i
   rightSideViewUtil(root.left, result, level + 1);
   return result;
 }
+
+Time : O(N)
+Space : O(N)
 
 Right View - Iterative:
 
@@ -84,6 +93,9 @@ ArrayList<Integer> rightSideViewUtil(TreeNode root, ArrayList<Integer> result) {
   }
   return result;
 }
+
+Time : O(N)
+Space : O(N)
 
 TopView - Recursive:
 
@@ -117,6 +129,7 @@ void inorder(Node root,int w,int h, TreeMap <Integer,Pair> map)
 } 
 
 TopView - Iterative:
+
 class Pair
 {
     Node node;
