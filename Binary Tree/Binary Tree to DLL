@@ -1,0 +1,77 @@
+
+
+source : https://practice.geeksforgeeks.org/problems/binary-tree-to-dll/1#
+****************************************************************************************************************************************
+Given a Binary Tree (BT), convert it to a Doubly Linked List(DLL) In-Place. 
+The left and right pointers in nodes are to be used as previous and next pointers respectively in converted DLL.
+The order of nodes in DLL must be same as Inorder of the given Binary Tree. 
+The first node of Inorder traversal (leftmost node in BT) must be the head node of the DLL.
+
+****************************************************************************************************************************************
+
+Approach 1:
+
+class Solution
+{
+    //Function to convert binary tree to doubly linked list and return it.
+    Node head,prev;
+    Node bToDLL(Node root)
+    {
+	
+	  head=prev=null;
+	  BinaryTree2DoubleLinkedList(root);
+	  return head;
+    }
+    
+    void BinaryTree2DoubleLinkedList(Node root)
+    {
+        if (root == null)
+            return;
+  
+        BinaryTree2DoubleLinkedList(root.left);
+  
+        if (prev == null)
+            head = root;
+        else
+        {
+            root.left = prev;
+            prev.right = root;
+        }
+        prev = root;
+  
+        BinaryTree2DoubleLinkedList(root.right);
+    }
+}
+
+Time : O(N)
+Space : O(N)
+
+Approach 2 :
+
+1.If the left subtree exists, process the left subtree
+  1.1 Recursively convert the left subtree to DLL.
+  1.2 Then find the inorder predecessor of the root in the left subtree (the inorder predecessor is the rightmost node in the left subtree).
+  1.3 Make the inorder predecessor as the previous root and the root as the next in order predecessor.
+
+2.If the right subtree exists, process the right subtree (Below 3 steps are similar to the left subtree).
+  2.1 Recursively convert the right subtree to DLL.
+  2.2 Then find the inorder successor of the root in the right subtree (in order the successor is the leftmost node in the right subtree).
+  2.3 Make the inorder successor as the next root and the root as the previous inorder successor.
+  
+3. Find the leftmost node and return it (the leftmost node is always the head of a converted DLL).
+
+Approach 3 :
+
+1) Fix Left Pointers: 
+In this step, we change left pointers to point to previous nodes in DLL. 
+The idea is simple, we do in order traversal of the tree. 
+In order to traversal, we keep track of the previously visited node and change the left pointer to the previous node. 
+2) Fix Right Pointers: 
+The above is intuitive and simple. 
+How to change the right pointers to point to the next node in DLL? 
+The idea is to use left pointers fixed in step 1. 
+We start from the rightmost node in Binary Tree (BT). 
+The rightmost node is the last node in DLL. 
+Since left pointers are changed to point to the previous node in DLL, we can linearly traverse the complete DLL using these pointers. 
+The traversal would be from last to the first node. 
+While traversing the DLL, we keep track of the previously visited node and change the right pointer to the previous node. 
