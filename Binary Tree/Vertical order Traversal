@@ -1,0 +1,92 @@
+
+source : https://practice.geeksforgeeks.org/problems/print-a-binary-tree-in-vertical-order/1#
+*********************************************************************************************************************************************
+Given a Binary Tree, find the vertical traversal of it starting from the leftmost level to the rightmost level.
+If there are multiple nodes passing through a vertical line, then they should be printed as they appear in level order traversal of the tree.
+
+**********************************************************************************************************************************************
+
+Recursive : 
+
+static ArrayList <Integer> verticalOrder(Node root)
+{
+   TreeMap<Integer, TreeMap<Integer, List<Integer>>> map = new TreeMap<>();
+    dfs(root, 0, 0, map);
+    ArrayList<Integer> list = new ArrayList<Integer>();
+    for (TreeMap<Integer, List<Integer>> ys : map.values()) {
+        for (List<Integer> nodes : ys.values()) {
+            for(int val : nodes) list.add(val);
+        }
+    }
+    return list;
+}
+
+ private static void dfs(Node root, int x, int y,  TreeMap<Integer, TreeMap<Integer, List<Integer>>> map) {
+    if (root == null) {
+        return;
+    }
+    if (!map.containsKey(x)) {
+        map.put(x, new TreeMap<>());
+    }
+    if (!map.get(x).containsKey(y)) {
+        map.get(x).put(y, new ArrayList<Integer>());
+    }
+    map.get(x).get(y).add(root.data);
+    dfs(root.left, x - 1, y + 1, map);
+    dfs(root.right, x + 1, y + 1, map);
+} 
+
+Time : O(NlogN)
+Space : O(N)
+
+Iterative :
+
+static ArrayList <Integer> verticalOrder(Node root)
+{
+    TreeMap<Integer, ArrayList<Integer>> map = new TreeMap<>();
+    helper(root, map);
+    ArrayList<Integer> result = new ArrayList<>();
+    for(List<Integer> list : map.values()){
+      for(int val : list)
+        result.add(val);
+    }    
+    return result;
+}
+
+private static void helper(Node t, TreeMap<Integer, ArrayList<Integer>> map) {
+if (t == null) {
+    return;
+}
+
+LinkedList<Node> q1 = new LinkedList<>();
+LinkedList<Integer> q2 = new LinkedList<>();
+q1.offer(t);
+q2.offer(0);
+
+while (!q1.isEmpty()) {
+    Node node = q1.poll();
+    int order = q2.poll();
+
+    //add to map
+    ArrayList<Integer> list = map.get(order);
+    if (list == null) {
+        list = new ArrayList<>();
+        map.put(order, list);
+    }
+    list.add(node.data);
+
+    if (node.left != null) {
+        q1.offer(node.left);
+        q2.offer(order - 1);
+    }
+
+    if (node.right != null) {
+        q1.offer(node.right);
+        q2.offer(order + 1);
+    }
+}
+
+}
+
+Time : O(NlogN)
+Space : O(N)
