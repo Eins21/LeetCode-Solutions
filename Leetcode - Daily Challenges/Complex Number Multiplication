@@ -1,0 +1,27 @@
+
+source : https://leetcode.com/problems/complex-number-multiplication/
+*************************************************************************************************************************************
+A complex number can be represented as a string on the form "real+imaginaryi" where:
+
+real is the real part and is an integer in the range [-100, 100].
+imaginary is the imaginary part and is an integer in the range [-100, 100].
+i^2 == -1.
+Given two complex numbers num1 and num2 as strings, return a string of the complex number that represents their multiplications.
+
+**************************************************************************************************************************************
+
+ public String complexNumberMultiply(String a, String b) {
+    String x[] = a.split("\\+|i");
+    String y[] = b.split("\\+|i");
+    int a_real = Integer.parseInt(x[0]);
+    int a_img = Integer.parseInt(x[1]);
+    int b_real = Integer.parseInt(y[0]);
+    int b_img = Integer.parseInt(y[1]);
+    return (a_real * b_real - a_img * b_img) + "+" + (a_real * b_img + a_img * b_real) + "i";
+}
+
+Time : O(max(a.len,b.len)) - split taken for split function
+Space : O(1)
+
+
+
