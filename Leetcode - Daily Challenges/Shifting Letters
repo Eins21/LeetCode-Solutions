@@ -25,4 +25,4 @@ public String shiftingLetters(String S, int[] shifts) {
 }
 
 Time : O(N)
-Space : O(1)
+Space : O(N)
