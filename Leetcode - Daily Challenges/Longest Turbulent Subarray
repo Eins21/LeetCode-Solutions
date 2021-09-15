@@ -1,0 +1,79 @@
+
+source : https://leetcode.com/problems/longest-turbulent-subarray/
+*************************************************************************************************************************
+Given an integer array arr, return the length of a maximum size turbulent subarray of arr.
+
+A subarray is turbulent if the comparison sign flips between each adjacent pair of elements in the subarray.
+
+More formally, a subarray [arr[i], arr[i + 1], ..., arr[j]] of arr is said to be turbulent if and only if:
+
+For i <= k < j:
+arr[k] > arr[k + 1] when k is odd, and
+arr[k] < arr[k + 1] when k is even.
+Or, for i <= k < j:
+arr[k] > arr[k + 1] when k is even, and
+arr[k] < arr[k + 1] when k is odd.
+
+***********************************************************************************************************************
+
+Approach 1:
+
+public int maxTurbulenceSize(int[] arr) {        
+    int max_size = Integer.MIN_VALUE;
+    for(int i=0;i<arr.length;i++){
+
+        boolean less_than = true,greater_than=true;
+        int count = 1;
+        for(int j=i;j<(arr.length-1);j++){
+
+            if(less_than && arr[j]>arr[j+1] ){
+                greater_than = true;
+                less_than = false;
+                count++;
+            } else if(greater_than && arr[j]<arr[j+1] ){
+                greater_than = false;
+                less_than = true;
+                count++;
+            } else{
+                break;
+            }
+        }
+
+       max_size = Math.max(count,max_size); 
+    }
+
+    return max_size;
+}
+
+Time : O(N^2)
+Space : O(1)
+
+Approach 2:
+
+public int maxTurbulenceSize(int[] arr) { 
+    int i = 1;
+    int j = 1; 
+    int max_len = 1;
+
+    for(int k=0; k < arr.length-1; k++){
+
+        if(arr[k] > arr[k+1]){
+            i = j+1;
+            j=1;
+
+        }    
+        else if(arr[k] < arr[k+1]){
+            j = i + 1;
+            i = 1;
+        }
+        else{
+            i = 1;
+            j = 1;
+        }
+        max_len = Math.max(max_len, Math.max(i, j));
+    }
+    return max_len;
+}
+
+Time : O(N)
+Space : O(1)
