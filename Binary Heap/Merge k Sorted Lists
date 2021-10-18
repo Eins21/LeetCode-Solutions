@@ -1,0 +1,34 @@
+
+source : https://leetcode.com/problems/merge-k-sorted-lists/
+
+*******************************************************************************************************************
+You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+
+Merge all the linked-lists into one sorted linked-list and return it.
+
+*******************************************************************************************************************
+
+Approach 1 : Heap
+
+public ListNode mergeKLists(ListNode[] lists) {
+        
+    PriorityQueue<ListNode> minHeap = new PriorityQueue<>((a,b) -> a.val - b.val);
+
+    for(ListNode node : lists)
+        if(node != null) 
+            minHeap.add(node);
+
+    ListNode dummy = new ListNode(0);
+    ListNode head = dummy;
+    while(!minHeap.isEmpty()){
+       head.next =  minHeap.poll();
+       head = head.next; 
+       if(head.next != null) minHeap.add(head.next);
+    }
+
+    return dummy.next;
+}
+
+Time : O(Nlogk) , Where N - total number of nodes
+Space : O(k)
+
