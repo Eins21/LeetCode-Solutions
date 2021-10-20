@@ -1,0 +1,51 @@
+
+source: https://leetcode.com/problems/flood-fill/
+
+**********************************************************************************************************************************************
+An image is represented by an m x n integer grid image where image[i][j] represents the pixel value of the image.
+
+You are also given three integers sr, sc, and newColor. You should perform a flood fill on the image starting from the pixel image[sr][sc].
+
+To perform a flood fill, consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color 
+as the starting pixel, plus any pixels connected 4-directionally to those pixels (also with the same color), and so on. 
+Replace the color of all of the aforementioned pixels with newColor.
+
+Return the modified image after performing the flood fill.
+
+************************************************************************************************************************************************
+
+DFS solution:
+
+public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+     
+    int parent = image[sr][sc];
+    image[sr][sc] = newColor;
+    if (parent != newColor) dfs(image,sr,sc,newColor,parent);
+    return image;
+
+}
+
+void dfs(int[][] image,int sr, int sc, int newColor,int parent){
+
+    int[][] directions = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+    for(int[] dir : directions){
+        int x = sr+dir[0];
+        int y = sc+dir[1];
+        if(IsWithinBoundary(image,x,y) && image[x][y] == parent){
+            image[x][y] = newColor;
+            dfs(image,x,y,newColor,parent);
+        }
+    }
+}
+
+boolean IsWithinBoundary(int[][] image,int x, int y){
+    if(x>= 0 && x< image.length && y>=0 && y< image[0].length){
+        return true;
+    }
+    return false;
+}
+
+Time : O(M*N) - M is number of rows, N is number of columns.
+Space : O(M*N) - it's the depth stack memory, in worst case is O(M * N)
+
+
