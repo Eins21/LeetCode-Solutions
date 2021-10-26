@@ -1,0 +1,27 @@
+
+source : https://practice.geeksforgeeks.org/problems/number-of-paths0926/1
+
+**************************************************************************************************
+The problem is to count all the possible paths from top left to bottom right of a MxN matrix with 
+the constraints that from each cell you can either move to right or down.
+
+**************************************************************************************************
+
+Solution :
+
+long numberOfPaths(int m, int n) {
+     return uniquePathsHelper(m - 1, n - 1);
+}
+
+private long uniquePathsHelper(int m, int n) {
+  if (m < 0 || n < 0) {
+    return 0;
+  } else if (m == 0 || n == 0) {
+    return 1;
+  } else {
+    return uniquePathsHelper(m - 1, n) + uniquePathsHelper(m, n - 1);
+  }
+}
+
+Time : O(2^(m+n))
+Space : O(m+n)
