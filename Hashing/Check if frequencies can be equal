@@ -1,0 +1,60 @@
+
+source : https://practice.geeksforgeeks.org/problems/check-frequencies4211/1#
+
+********************************************************************************************************************************
+Given a string s which contains only lower alphabetic characters, check if it is possible to remove at most one character 
+from this string in such a way that frequency of each distinct character becomes same in the string.
+
+********************************************************************************************************************************
+
+Solution 1:
+
+boolean sameFreq(String s) {
+    return possibleSameCharFreqByOneRemoval(s);
+}
+
+static boolean possibleSameCharFreqByOneRemoval(String str)
+{
+
+    int[] freq = new int[26];
+    for (int i = 0; i < str.length(); i++)
+        freq[getIdx(str.charAt(i))]++;
+
+    if (allSame(freq, 26)) return true;
+
+    for (char c = 'a'; c <= 'z'; c++) {
+        int i = getIdx(c);
+        if (freq[i] > 0) {
+            freq[i]--;
+            if (allSame(freq, 26))  return true;
+            freq[i]++;
+        }
+    }
+    return false;
+}
+
+
+static boolean allSame(int freq[], int N)
+{
+    int same = 0;
+    int i;
+    for (i = 0; i < N; i++) {
+        if (freq[i] > 0) {
+            same = freq[i];
+            break;
+        }
+    }
+    for (int j = i + 1; j < N; j++)
+        if (freq[j] > 0 && freq[j] != same)
+            return false;
+
+    return true;
+}
+
+static int getIdx(char ch)
+{
+    return (ch - 'a');
+}
+
+Time : O(N)
+Space : O(N)
