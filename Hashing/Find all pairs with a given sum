@@ -1,0 +1,47 @@
+
+source : https://practice.geeksforgeeks.org/problems/find-all-pairs-whose-sum-is-x5808/1#
+
+*********************************************************************************************************************
+Given two unsorted arrays A of size N and B of size M of distinct elements, the task is to find all pairs from 
+both arrays whose sum is equal to X.
+
+**********************************************************************************************************************
+
+Solution 1:
+
+class SortbyFirst implements Comparator<pair>
+{
+    public int compare(pair a, pair b)
+    {
+        return (int)(a.first - b.first);
+    }
+}
+
+class Solution {
+    public pair[] allPairs( long A[], long B[], long N, long M, long X) {
+        
+        HashMap<Long,Long> freqMap = new HashMap<>();
+        
+        for(int i=0;i<B.length;i++)
+         freqMap.put(B[i],freqMap.getOrDefault(B[i],0L)+1);
+         
+        List<pair> pairList = new ArrayList<>(); 
+        for(long num : A){
+            if(freqMap.containsKey(X-num)){
+                 pairList.add(new pair(num,X-num));
+                 freqMap.remove(X-num);
+            }
+        }
+        
+        pair[] pairArr = new pair[pairList.size()];
+        
+        Collections.sort(pairList, new SortbyFirst());
+        int k=0;
+        for(pair obj:pairList)pairArr[k++]=obj;
+        return pairArr;
+        
+    }
+}
+
+Time : O(NlogN)
+Space : O(N)
