@@ -1,0 +1,49 @@
+
+source : https://practice.geeksforgeeks.org/problems/uncommon-characters4932/1#
+
+*************************************************************************************************************************
+Given two strings A and B. Find the characters that are not common in the two strings. 
+
+*************************************************************************************************************************
+
+Solution :
+
+String UncommonChars(String A, String B)
+{
+    HashMap<Character,Boolean> freqMap = new HashMap<>();
+    HashMap<Character,Boolean> freqMap1 = new HashMap<>();
+
+    for(char c : A.toCharArray()){
+        freqMap.put(c,true);
+    }
+
+    for(char c : B.toCharArray()){
+        freqMap1.put(c,true);
+    }
+
+    for(char c : B.toCharArray()){
+        if(freqMap.containsKey(c)) freqMap.put(c,false);
+    }
+
+    for(char c : A.toCharArray()){
+        if(freqMap1.containsKey(c)) freqMap1.put(c,false);
+    }
+
+    String s="";
+    for(char c : freqMap.keySet()){
+        if(freqMap.get(c) == true) s+=c;
+    }
+
+    for(char c : freqMap1.keySet()){
+        if(freqMap1.get(c) == true) s+=c;
+    }
+
+    char[] resultArr = s.toCharArray();
+    Arrays.sort(resultArr);
+
+    return s.isEmpty()?"-1": String.valueOf(resultArr);
+
+}
+
+Time : O(M+N+NoOfUncommonChars)
+Space : O(2(N+M))
