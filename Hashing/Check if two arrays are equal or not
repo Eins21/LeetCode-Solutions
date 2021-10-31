@@ -1,0 +1,32 @@
+
+source: https://practice.geeksforgeeks.org/problems/check-if-two-arrays-are-equal-or-not3847/1#
+
+***************************************************************************************************************
+Given two arrays A and B of equal size N, the task is to find if given arrays are equal or not. 
+Two arrays are said to be equal if both of them contain same set of elements, arrangements (or permutation) 
+of elements may be different though.
+Note : If there are repetitions, then counts of repeated elements must also be same for two array to be equal.
+
+***************************************************************************************************************
+
+Solution :
+
+public static boolean check(long A[],long B[],int N)
+{
+    Map<Long, Integer> freqMap = new HashMap<>();
+    for(long x : A){
+        freqMap.put(x, freqMap.getOrDefault(x, 0) + 1);
+    }
+    for(long x : B){
+        if(freqMap.containsKey(x)){
+            freqMap.put(x, freqMap.get(x) - 1);
+            if(freqMap.get(x) == 0){
+                freqMap.remove(x);
+            }
+        }
+    }
+    return freqMap.size() == 0;
+}
+
+Time : O(N)
+Space : O(N)
