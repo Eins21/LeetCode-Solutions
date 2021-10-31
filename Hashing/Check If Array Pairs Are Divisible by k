@@ -1,0 +1,54 @@
+
+source : https://leetcode.com/problems/check-if-array-pairs-are-divisible-by-k/
+*******************************************************************************************************
+Given an array of integers arr of even length n and an integer k.
+
+We want to divide the array into exactly n / 2 pairs such that the sum of each pair is divisible by k.
+
+Return True If you can find a way to do that or False otherwise.
+
+********************************************************************************************************
+
+Solution 1 :
+public boolean canArrange(int[] arr, int k) {
+
+    int[] frequency = new int[k];
+    for(int num : arr){
+        num %= k;
+        if(num < 0) num += k;
+        frequency[num]++;
+    }
+    if(frequency[0]%2 != 0) return false;
+
+    for(int i = 1; i <= k/2; i++)
+        if(frequency[i] != frequency[k-i]) return false;
+
+    return true;
+}
+
+Time : O(N)
+Space : O(K)
+
+Solution 2:
+
+public boolean canArrange(int[] arr, int k) {
+        
+    Map<Integer, Integer> remainderFreqMap = new HashMap<>();
+    int count = 0;
+
+    for (int num: arr) {
+        int remainder = (num % k+k)%k;
+        int complementaryRemainder = (k - remainder)%k;
+        if (remainderFreqMap.containsKey(complementaryRemainder) && remainderFreqMap.get(complementaryRemainder) > 0) {
+            remainderFreqMap.put(complementaryRemainder, remainderFreqMap.get(complementaryRemainder) - 1);
+            count++;
+        } else {
+            remainderFreqMap.put(remainder, remainderFreqMap.getOrDefault(remainder, 0) + 1);
+        }
+    }
+
+    return count == arr.length / 2;
+}
+
+Time : O(N)
+Space : O(K)
