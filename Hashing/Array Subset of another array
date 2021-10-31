@@ -1,0 +1,28 @@
+
+source : https://practice.geeksforgeeks.org/problems/array-subset-of-another-array2317/1#
+
+**********************************************************************************************************************************
+Given two arrays: a1[0..n-1] of size n and a2[0..m-1] of size m. Task is to check whether a2[]
+is a subset of a1[] or not. Both the arrays can be sorted or unsorted. It may be assumed that elements in both array are distinct.
+***********************************************************************************************************************************
+
+Solution
+
+ public String isSubset( long a1[], long a2[], long n, long m) {
+        
+   HashMap<Long,Long> map=new HashMap<>();
+   for(int i=0;i<n;i++)
+   {
+       if(!map.containsKey(a1[i])) map.put(a1[i],1l);
+   }
+   for(int j=0;j<m;j++)
+   {
+       if(!map.containsKey(a2[j])) return "No";
+
+   }
+
+   return "Yes";
+}
+
+Time : O(N)
+Space : O(N)
