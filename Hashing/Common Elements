@@ -1,0 +1,33 @@
+
+source: https://practice.geeksforgeeks.org/problems/common-elements5420/1#
+
+**********************************************************************************************************
+Given two lists V1 and V2 of sizes n and m respectively. Return the list of elements common to both the 
+lists and return the list in sorted order. Duplicates may be there in the output list.
+
+***********************************************************************************************************
+
+Solution 1 : 
+ public static ArrayList<Integer> common_element(ArrayList<Integer>v1, ArrayList<Integer>v2)
+{
+
+    HashMap<Integer,Integer> freqMap = new HashMap<>();
+
+    for(int i=0;i<v1.size();i++){
+       freqMap.put(v1.get(i),freqMap.getOrDefault(v1.get(i),0)+1); 
+    }
+
+    ArrayList<Integer> result = new ArrayList<>();
+    for(int i=0;i<v2.size();i++){
+        if(freqMap.containsKey(v2.get(i)) && freqMap.get(v2.get(i)) > 0){
+          result.add(v2.get(i));
+          freqMap.put(v2.get(i),freqMap.get(v2.get(i))-1); 
+        } 
+    }
+
+    Collections.sort(result);
+    return result;
+}
+
+Time: O(N + M + NoOfCommonElements log NoOfCommonElements)
+Space : O(N)
