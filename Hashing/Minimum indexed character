@@ -1,0 +1,32 @@
+
+source : https://practice.geeksforgeeks.org/problems/minimum-indexed-character-1587115620/1#
+
+***************************************************************************************************************
+Given a string str and another string patt. Find the first position (considering 0-based indexing) of the 
+character in patt that is present at the minimum index in str.
+
+***************************************************************************************************************
+
+Solution:
+public static int minIndexChar(String str, String patt)
+{
+
+     HashMap<Character,Integer> freqMap = new HashMap<>();
+
+     for(int i=0;i<str.length();i++){
+         freqMap.put(str.charAt(i),Math.min(freqMap.getOrDefault(str.charAt(i),Integer.MAX_VALUE),i));
+     }
+
+     int min=Integer.MAX_VALUE;
+     for(int i=0;i<patt.length();i++){
+
+         if(freqMap.containsKey(patt.charAt(i)))
+         min = Math.min(min,freqMap.get(patt.charAt(i)));
+     }
+
+     return min==Integer.MAX_VALUE?-1:min;
+
+}
+
+Time : O(N)
+Space : O(NoOfDistinctChars)
