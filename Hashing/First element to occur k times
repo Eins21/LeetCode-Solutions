@@ -1,0 +1,29 @@
+
+source : https://practice.geeksforgeeks.org/problems/first-element-to-occur-k-times5150/1
+
+********************************************************************************************************************
+Given an array of N integers. Find the first element that occurs K number of times. 
+ 
+********************************************************************************************************************
+
+Solution 1:
+
+public int firstElementKTime(int[] a, int n, int k) { 
+
+    HashMap<Integer,Integer> freqMap = new HashMap<>();
+
+    for(int i=0;i<a.length;i++){
+
+         freqMap.put(a[i],freqMap.getOrDefault(a[i],0)+1); 
+         if(freqMap.get(a[i]) == k) return a[i];
+
+    }
+
+    return -1;
+} 
+
+Time : O(N)
+Space : O(N)
+ 
+ 
+ 
