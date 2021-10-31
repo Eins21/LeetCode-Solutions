@@ -1,0 +1,38 @@
+
+source : https://practice.geeksforgeeks.org/problems/count-distinct-elements-in-every-window/1#
+
+*************************************************************************************************************
+Given an array of integers and a number K. Find the count of distinct elements in every window of
+size K in the array.
+
+************************************************************************************************************
+
+Solution:
+
+ArrayList<Integer> countDistinct(int A[], int n, int k)
+{
+    ArrayList<Integer> resultList = new ArrayList<>();
+    HashMap<Integer,Integer> freqMap = new HashMap<>();
+
+    for(int i=0;i<k;i++) freqMap.put(A[i],freqMap.getOrDefault(A[i],0)+1);
+
+    resultList.add(freqMap.size());
+
+    for(int i=k;i<A.length;i++){
+
+        if(freqMap.get(A[i-k]) == 1) 
+            freqMap.remove(A[i-k]);
+        else
+           freqMap.put(A[i-k],freqMap.get(A[i-k])-1);
+
+        freqMap.put(A[i],freqMap.getOrDefault(A[i],0)+1);
+
+        resultList.add(freqMap.size());
+    }
+
+   return  resultList;
+}
+
+
+Time : O(N)
+Space : O(N)
