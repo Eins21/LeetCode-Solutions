@@ -87,3 +87,36 @@ public String longestPalindrome(String s) {
 
 Time : O(N^2)
 Space : O(N^2)
+
+
+String res ="";
+int maxlen = Integer.MIN_VALUE;
+
+public String longestPalindrome(String s) {
+
+  if (s.length() < 2) return s;
+
+  for (int i = 0; i < s.length() - 1; i++) {
+    extendPalindrome(s, i, i);
+    extendPalindrome(s, i, i + 1);
+  }
+  return res;
+}
+
+void extendPalindrome(String s,int i,int j){
+
+    while(i>=0 && j<s.length() && s.charAt(i) == s.charAt(j)){
+        i--;
+        j++;
+    }
+
+    if(maxlen<(j-i-1)){
+        maxlen = j-i-1;
+        res = s.substring(i+1,i+1+maxlen);
+    }
+}
+
+Reason for (j-i-1) : When while loop ends i and j don't point the palindrome
+
+Time : O(N^2)
+Space : O(1)
