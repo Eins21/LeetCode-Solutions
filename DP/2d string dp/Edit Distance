@@ -1,0 +1,98 @@
+
+source : https://leetcode.com/problems/edit-distance/
+
+********************************************************************************************************************************
+Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.
+
+You have the following three operations permitted on a word:
+
+Insert a character
+Delete a character
+Replace a character
+
+********************************************************************************************************************************
+
+Recursive:
+
+public int minDistance(String word1, String word2) {
+
+  if (word1 == null || word1.isEmpty()) return word2.length();
+  if (word2 == null || word2.isEmpty()) return word1.length();
+
+  return minDistanceUtil(word1, word2, 0, 0);
+}
+
+int minDistanceUtil(String word1, String word2, int i, int j) {
+
+  if (word1.length() == i) return word2.length() - j;
+  if (word2.length() == j) return word1.length() - i;
+
+  int result;
+  if (word1.charAt(i) == word2.charAt(j)) {
+    result = minDistanceUtil(word1, word2, i + 1, j + 1);
+  } else {
+    int replace = minDistanceUtil(word1, word2, i + 1, j + 1);
+    int delete = minDistanceUtil(word1, word2, i + 1, j);
+    int insert = minDistanceUtil(word1, word2, i, j + 1);
+    result = Math.min(Math.min(delete, insert), replace) + 1;
+  }
+  return result;
+}
+
+Time : O(3^Math.min(word1.length(),word2.length())
+Space : recursion stack space
+
+Top down:
+
+public int minDistance(String word1, String word2) {
+
+  if (word1 == null || word1.isEmpty()) return word2.length();
+  if (word2 == null || word2.isEmpty()) return word1.length();
+
+  Integer[][] memo = new Integer[word1.length()][word2.length()];
+  return minDistanceUtil(word1, word2, 0, 0, memo);
+}
+
+int minDistanceUtil(String word1, String word2, int i, int j, Integer[][] memo) {
+
+  if (word1.length() == i) return word2.length() - j;
+  if (word2.length() == j) return word1.length() - i;
+
+  if (memo[i][j] != null) return memo[i][j];
+  if (word1.charAt(i) == word2.charAt(j)) {
+    memo[i][j] = minDistanceUtil(word1, word2, i + 1, j + 1, memo);
+  } else {
+    int replace = minDistanceUtil(word1, word2, i + 1, j + 1, memo);
+    int delete = minDistanceUtil(word1, word2, i + 1, j, memo);
+    int insert = minDistanceUtil(word1, word2, i, j + 1, memo);
+    memo[i][j] = Math.min(Math.min(delete, insert), replace) + 1;
+  }
+  return memo[i][j];
+}
+
+Time : O(word1.length() * word2.length())
+Space : O(word1.length() * word2.length())
+
+Botto up:
+
+public int minDistance(String word1, String word2) {
+
+  if (word1 == null || word1.isEmpty()) return word2.length();
+  if (word2 == null || word2.isEmpty()) return word1.length();
+
+  int[][] dp = new int[word1.length() + 1][word2.length() + 1];
+
+  for (int i = 0; i <= word1.length(); i++) dp[i][0] = i;
+  for (int j = 0; j <= word2.length(); j++) dp[0][j] = j;
+
+  for (int i = 1; i <= word1.length(); i++) {
+    for (int j = 1; j <= word2.length(); j++) {
+      dp[i][j] = word1.charAt(i - 1) == word2.charAt(j - 1) ? dp[i - 1][j - 1]
+          : Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
+    }
+  }
+  return dp[word1.length()][word2.length()];
+}
+
+Time : O(word1.length() * word2.length())
+Space : O(word1.length() * word2.length())
