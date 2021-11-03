@@ -1,0 +1,14 @@
+
+source : https://www.interviewbit.com/problems/repeating-subsequence/
+
+*****************************************************************************************************************************************************
+Given a string A, find length of the longest repeating sub-sequence such that the two subsequence don’t have same string character at same position,
+
+i.e., any i’th character in the two subsequences shouldn’t have the same index in the original string.
+
+NOTE: Sub-sequence length should be greater than or equal to 2.
+
+*****************************************************************************************************************************************************
+
+Similar to longest subsequence. But i!=j
+
