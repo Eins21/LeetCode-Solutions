@@ -1,0 +1,63 @@
+
+source : https://leetcode.com/problems/regular-expression-matching/
+
+**********************************************************************************************************************
+Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:
+
+'.' Matches any single character.​​​​
+'*' Matches zero or more of the preceding element.
+The matching should cover the entire input string (not partial).
+
+**********************************************************************************************************************
+
+
+Recursive : 
+
+public boolean isMatch(String s, String p) {
+        
+    return isMatchUtil(s,p,0,0);
+}
+
+boolean isMatchUtil(String s, String p,int i,int j){
+
+    if(p.length() == j) return s.length() == i;
+
+    if(j+1<p.length() && p.charAt(j+1) == '*')            
+        return isMatchUtil(s,p,i,j+2) || (i<s.length() && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') && isMatchUtil(s,p,i+1,j));
+
+    else if(i<s.length() && ( p.charAt(j) == '.' || s.charAt(i) == p.charAt(j)))
+        return isMatchUtil(s,p,i+1,j+1);
+
+    return false;
+}
+
+Time : 2^m
+Space : recursion stack space
+
+Memoization :
+
+public boolean isMatch(String s, String p) {
+   Boolean[][] memo = new Boolean[s.length()+1][p.length()];
+   return isMatchUtil(s,p,0,0,memo);
+}
+
+
+boolean isMatchUtil(String s, String p,int i,int j,Boolean[][] memo){
+
+   if(p.length() == j) return s.length() == i;
+
+  if(memo[i][j] != null) return memo[i][j];
+
+  if(j+1<p.length() && p.charAt(j+1) == '*')            
+      return memo[i][j] = isMatchUtil(s,p,i,j+2,memo) || (i<s.length() && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') && isMatchUtil(s,p,i+1,j,memo));
+
+  else if(i<s.length() && ( p.charAt(j) == '.' || s.charAt(i) == p.charAt(j)))
+      return memo[i][j] = isMatchUtil(s,p,i+1,j+1,memo);
+
+  return memo[i][j]=false;
+}
+
+Time : O(s.length() * p.length())
+Space : O(s.length() * p.length())
+
+Iterative :
