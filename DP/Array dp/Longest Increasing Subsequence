@@ -1,0 +1,65 @@
+
+source : https://leetcode.com/problems/longest-increasing-subsequence/
+
+*************************************************************************************************************************
+Given an integer array nums, return the length of the longest strictly increasing subsequence.
+
+A subsequence is a sequence that can be derived from an array by deleting some or no elements without changing the order
+of the remaining elements. For example, [3,6,2,7] is a subsequence of the array [0,3,1,6,2,2,7].
+
+**************************************************************************************************************************
+
+Recursion:
+
+public int lengthOfLIS(int[] nums) {
+
+  return lengthOfLISUtil(nums, 0, -1);
+}
+
+int lengthOfLISUtil(int[] nums, int i, int prevIndex) {
+
+  if (nums.length == i) return 0;
+
+  int dontTake = 0, take = 0;
+
+  if (prevIndex == -1 || nums[i] > nums[prevIndex])
+    take = 1 + lengthOfLISUtil(nums, i + 1, i);
+
+  dontTake = lengthOfLISUtil(nums, i + 1, prevIndex);
+
+  return Math.max(dontTake, take);
+}
+
+Time : O(2^n)
+Space : Recursion stack space
+
+Memoization:
+
+public int lengthOfLIS(int[] nums) {
+
+  Integer[][] memo = new Integer[nums.length][nums.length + 1];
+
+  return lengthOfLISUtil(nums, 0, -1, memo);
+}
+
+
+int lengthOfLISUtil(int[] nums, int i, int prevIndex, Integer[][] memo) {
+
+  if (nums.length == i)
+    return 0;
+
+  if (prevIndex != -1 && memo[i][prevIndex + 1] != null)
+    return memo[i][prevIndex + 1];
+
+  int dontTake = 0, take = 0;
+
+  if (prevIndex == -1 || nums[i] > nums[prevIndex])
+    take = 1 + lengthOfLISUtil(nums, i + 1, i, memo);
+
+  dontTake = lengthOfLISUtil(nums, i + 1, prevIndex, memo);
+
+  return memo[i][prevIndex + 1] = Math.max(dontTake, take);
+}
+
+Time : O(N^2)
+Space : O(N^2)
