@@ -1,0 +1,90 @@
+
+source : https://leetcode.com/problems/climbing-stairs/
+
+********************************************************************************************************
+You are climbing a staircase. It takes n steps to reach the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+********************************************************************************************************
+
+Recursion:
+
+public int climbStairs(int n) {
+
+	return climbStairsUtil(n);
+}
+
+int climbStairsUtil(int n) {
+
+	if (n == 1 || n == 2)
+		return n;
+
+	return climbStairsUtil(n - 1) + climbStairsUtil(n - 2);
+}
+
+Time : O(2^n)
+Space : Recursion stack space
+
+Memoization:
+
+public int climbStairs(int n) {
+
+	Integer[] dp = new Integer[n+1]; 
+	return climbStairsUtil(n,dp);
+}
+
+int climbStairsUtil(int n, Integer[] dp) {
+
+	if (n == 1 || n == 2) return n;
+
+	if (dp[n] != null) return dp[n];
+
+	return dp[n] = climbStairsUtil(n - 1, dp) + climbStairsUtil(n - 2, dp);
+}
+
+Time : O(n)
+Space : O(n)
+
+Iterative:
+
+public int climbStairs(int n) {
+
+	int[] dp = new int[n + 1];
+
+	if (n == 1 || n == 2) return n;
+
+	dp[1] = 1;
+	dp[2] = 2;
+
+	for (int i = 3; i <= n; i++) {
+		dp[i] = dp[i - 1] + dp[i - 2];
+	}
+
+	return dp[n];
+}
+
+Time : O(n)
+Space : O(n)
+
+Iterative - Space optimized
+
+public int climbStairs(int n) {
+
+	if (n == 1 || n == 2) return n;
+
+	int stepOne = 1;
+	int stepTwo = 2;
+
+	int result = 0;
+	for (int i = 3; i <= n; i++) {
+		result = stepOne + stepTwo;
+		stepOne = stepTwo;
+		stepTwo = result;
+	}
+
+	return result;
+}
+
+Time : O(n)
+Space : O(1)
