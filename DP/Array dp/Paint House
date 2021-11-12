@@ -13,7 +13,7 @@ costs[1][2] is the cost of painting house 1 with color green, and so on... Find 
 
 ********************************************************************************************************************************
 
-Bruteforce :
+Bruteforce - 1:
 
 int minCost =  Integer.MAX_VALUE; 
 public int minCost(int[][] costs) {
@@ -32,8 +32,42 @@ int minCostUtil(int[][] costs, int i,int prevIndex,int currentCost) {
   return minCost;
 }
 
-Time : O(3^n)
+Time : O(2^n)
 Space : Recursion stack space
+
+Bruteforce -2:
+public int minCost(int[][] costs) {
+    return Math.min(minCost(0,0,costs), Math.min(minCost(0,1,costs),minCost(0,2,costs)));     
+}
+private int minCost(int p, int c, int[][] costs) {
+    if(p==costs.length) return 0;
+    int mc=Integer.MAX_VALUE;
+    for(int i=0;i<3;i++) if(i!=c)  mc=Math.min(mc,minCost(p+1,i,costs));
+    return costs[p][c]+mc;
+}
+
+Time : O(2^N)
+Space : Recursion stack space
+
+
+Memoization:
+
+public int minCost(int[][] costs) {
+    int h=costs.length;
+    if(h==0) return 0;
+    int[][] mem=new int[h][costs[0].length];
+    return Math.min(minCost(0,0,costs,mem), Math.min(minCost(0,1,costs,mem),minCost(0,2,costs,mem)));     
+}
+private int minCost(int p, int c, int[][] costs, int[][] mem) {
+    if(p==costs.length) return 0;
+    if(mem[p][c]!=0) return mem[p][c];
+    int mc=Integer.MAX_VALUE;
+    for(int i=0;i<3;i++) if(i!=c)  mc=Math.min(mc,minCost(p+1,i,costs,mem));
+    return mem[p][c]=costs[p][c]+mc;
+}
+
+Time : O(N)
+Space : O(N*3)
 
 Iterative DP:
 
