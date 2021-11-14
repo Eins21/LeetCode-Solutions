@@ -1,0 +1,126 @@
+
+source : https://leetcode.com/problems/partition-equal-subset-sum/
+
+******************************************************************************************************************************
+Given a non-empty array nums containing only positive integers, find if the array can be partitioned into two subsets
+such that the sum of elements in both subsets is equal.
+
+*******************************************************************************************************************************
+
+Recursive:
+
+public boolean canPartition(int[] nums) {
+  int sum = 0;
+  for (int num : nums)
+    sum += num;
+  return canPartitionUtil(nums, 0, sum, 0);
+}
+
+boolean canPartitionUtil(int[] nums, int currentSum, int sum, int index) {
+
+  if (index == nums.length) {
+    if ((sum - currentSum) == currentSum)
+      return true;
+    return false;
+  }
+  return canPartitionUtil(nums, currentSum + nums[index], sum, index + 1)
+      || canPartitionUtil(nums, currentSum, sum, index + 1);
+}
+
+Time : O(2^n)
+Space : O(n)
+
+public boolean canPartition(int[] nums) {
+  int sum = 0;
+  for (int num : nums)
+    sum += num;
+
+      Boolean[][] memo = new Boolean[nums.length][sum];
+  return canPartitionUtil(nums, 0, sum, 0,memo);
+}
+
+boolean canPartitionUtil(int[] nums, int currentSum, int sum, int index,Boolean[][] memo) {
+
+  if (index == nums.length) {
+    if ((sum - currentSum) == currentSum)
+      return true;
+    return false;
+  }
+
+      if(memo[index][currentSum] != null) return memo[index][currentSum];
+
+      if(currentSum <= sum/2)
+  return memo[index][currentSum]=canPartitionUtil(nums, currentSum + nums[index], sum, index + 1,memo) || canPartitionUtil(nums, currentSum, sum, index + 1,memo);
+      return memo[index][currentSum]=false;
+}
+
+Time : O(n*C) Where C is capacity
+Space : O(n*C)
+
+public boolean canPartition(int[] nums) {
+  int sum = 0;
+
+  for (int num : nums)
+    sum += num;
+
+  if ((sum & 1) == 1) {
+    return false;
+  }
+  sum /= 2;
+
+  boolean[][] memo = new boolean[nums.length + 1][sum + 1];
+
+  memo[0][0] = true;
+
+  for (int i = 1; i < memo.length; i++)
+    memo[i][0] = true;
+
+  for (int j = 1; j < memo[0].length; j++)
+    memo[0][j] = false;
+
+  for (int i = 1; i < memo.length; i++) {
+    for (int j = 1; j < sum + 1; j++) {
+      memo[i][j] = memo[i - 1][j];
+      if (j >= nums[i - 1]) {
+        memo[i][j] = (memo[i][j] || memo[i - 1][j - nums[i - 1]]);
+      }
+    }
+  }
+
+  return memo[nums.length][sum];
+
+}
+
+Time : O(n*C) Where C is capacity
+Space : O(n*C)
+
+public boolean canPartition(int[] nums) {
+  int sum = 0;
+
+  for (int num : nums)
+    sum += num;
+
+  if ((sum & 1) == 1) {
+    return false;
+  }
+  sum /= 2;
+
+  int n = nums.length;
+  boolean[] dp = new boolean[sum + 1];
+  Arrays.fill(dp, false);
+  dp[0] = true;
+
+  for (int num : nums) {
+    for (int i = sum; i > 0; i--) {
+      if (i >= num) {
+        dp[i] = dp[i] || dp[i - num];
+      }
+    }
+  }
+
+  return dp[sum];
+
+}
+
+Time : O(n*C) Where C is capacity
+Space : O(C)
