@@ -76,3 +76,53 @@ public int cutting(int[] prices, int n) {
 Time : O(n)
 Space : O(n)
 
+
+
+Knapsack Approach:
+
+Recursion:
+
+public int cutting(int[] prices, int n) {
+
+return cuttingRodUtil(prices,n,1);
+}
+
+int cuttingRodUtil(int[] prices,int maxLength,int length){
+
+if(maxLength <= 0 || maxLength < length) return 0;
+
+int profit = prices[length-1] + cuttingRodUtil(prices,maxLength - length, length);
+int profit1 =  cuttingRodUtil(prices,maxLength, length+1);
+return Math.max(profit1,profit);
+
+
+}
+
+Time : O(2^n)
+Space : recursion stack space
+
+Memoization:
+
+public int cutting(int[] prices, int n) {
+
+Integer[][] memo = new Integer[n+1][n+1];
+return cuttingRodUtil(prices,n,1,memo);
+}
+
+int cuttingRodUtil(int[] prices,int maxLength,int length,Integer[][] memo){
+
+if(maxLength <= 0 || maxLength < length) return 0;
+
+if(memo[length][maxLength] != null) return memo[length][maxLength];
+
+int profit = prices[length-1] + cuttingRodUtil(prices,maxLength - length, length,memo);
+int profit1 =  cuttingRodUtil(prices,maxLength, length+1,memo);
+return memo[length][maxLength] = Math.max(profit1,profit);
+
+}
+
+Time : O(n*maxlength)
+Space : O(n*maxlength)
+
+Iterative
+
