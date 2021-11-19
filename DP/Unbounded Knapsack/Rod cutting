@@ -1,0 +1,78 @@
+
+source : https://www.lintcode.com/problem/700/
+
+*********************************************************************************************************************
+Given a rod of length n inches and an array of prices that contains prices of all pieces of size smaller than n. 
+Determine the maximum value obtainable by cutting up the rod and selling the pieces.
+
+*********************************************************************************************************************
+
+Recursion :
+
+public int cutting(int[] prices, int n) {
+        
+   return cuttingRodUtil(prices,n);
+}
+
+int cuttingRodUtil(int[] prices,int n){
+
+   if(n == 0) return 0;
+
+   int maxValue = Integer.MIN_VALUE;
+
+   for(int i=1;i<=prices.length;i++){
+
+       if(i<=n)
+       maxValue = Math.max(maxValue,prices[i-1] + cuttingRodUtil(prices,n-i));
+   }
+
+   return maxValue;
+}
+
+Time : O(n^n)
+Space : recursion stack space
+
+Memoization :
+
+public int cutting(int[] prices, int n) {
+
+   Integer[] memo = new Integer[n+1];
+   return cuttingRodUtil(prices,n,memo);
+}
+
+int cuttingRodUtil(int[] prices,int n,Integer[] memo){
+
+   if(n == 0) return 0;
+
+   if(memo[n] != null) return memo[n];
+   int maxValue = Integer.MIN_VALUE;
+
+   for(int i=1;i<=prices.length;i++){
+
+       if(i<=n)
+       maxValue = Math.max(maxValue,prices[i-1] + cuttingRodUtil(prices,n-i,memo));
+   }
+
+   return memo[n] = maxValue;
+}
+
+Time : O(n)
+Space : O(n)
+
+Iterative :
+
+public int cutting(int[] prices, int n) {
+
+   int[] memo = new int[n+1];
+
+   for(int i=1;i<=n;i++){
+       for(int j=1;j<=i;j++){
+          memo[i] = Math.max(memo[i],prices[j-1]+ memo[i-j]);
+       }
+   }
+   return memo[n];
+}
+
+Time : O(n)
+Space : O(n)
+
