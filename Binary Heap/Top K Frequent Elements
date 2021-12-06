@@ -1,0 +1,64 @@
+
+source : https://leetcode.com/problems/top-k-frequent-elements/
+
+********************************************************************************************************************************
+Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+
+*********************************************************************************************************************************
+
+Solution 1:
+
+public int[] topKFrequent(int[] nums, int k) {
+        
+    if (k == nums.length) return nums;
+
+    Map<Integer, Integer> count = new HashMap();
+    for (int n: nums)  count.put(n, count.getOrDefault(n, 0) + 1);
+
+    PriorityQueue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));
+
+    for (int n: count.keySet()) {
+      heap.add(n);
+      if (heap.size() > k) heap.poll();    
+    }
+
+    int[] top = new int[k];
+    for(int i = k - 1; i >= 0; --i) {
+        top[i] = heap.poll();
+    }
+    return top;
+}
+
+Time : O(Nlogk) if k < N
+Space : O(N+k) 
+
+Solution 2:
+
+public int[] topKFrequent(int[] nums, int k) {
+        
+    Map<Integer, Integer> freq = new HashMap<>();
+    for (int num : nums)  freq.put(num, freq.getOrDefault(num, 0) + 1);
+
+    int n = nums.length;
+    List<Integer>[] bucket = new List[n+1];
+    for (int i = 0; i <= n; i++)  bucket[i] = new ArrayList<>();
+
+    for (int num : freq.keySet()) bucket[freq.get(num)].add(num);
+
+    List<Integer> topk = new ArrayList<>();
+    for (int i = n; i >= 0; i--) {
+        for (int num : bucket[i]) {
+            k--;
+            topk.add(num);
+        }
+        if (k <= 0) break;
+    }
+
+    int[] res = new int[topk.size()];
+
+    for (int i = 0; i < topk.size(); i++) res[i] = topk.get(i);
+    return res;
+}
+
+Time : O(N)
+Space : O(N)
