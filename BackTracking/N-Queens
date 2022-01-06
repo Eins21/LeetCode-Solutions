@@ -1,0 +1,141 @@
+
+*************************************************************************************************************************************************************
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+
+Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+
+*************************************************************************************************************************************************************
+
+Solution 1:
+
+class Solution {
+   
+    public List<List<String>> solveNQueens(int n) {
+        
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                board[i][j] = '.';
+        List<List<String>> ans = new ArrayList(); 
+        getAllSolutions(ans,board,0);
+        return ans;
+    }
+    
+    public  void getAllSolutions(List<List<String>> ans,char[][] board,int row){
+        
+        if(row == board.length){
+            ans.add(construct(board));
+            return;
+        }
+        
+        for(int col=0;col<board[0].length;col++){
+            
+            if(isValidPosition(board,row,col)){
+                board[row][col] = 'Q';
+                getAllSolutions(ans,board,row+1);
+                board[row][col] = '.';
+            }
+        }
+        
+    }
+    
+    boolean isValidPosition(char[][] board,int row,int col){
+        
+        int currRow = row;
+        int currCol = col;
+        while(row>=0){
+            if(board[row][col] == 'Q') 
+                return false;
+            row--;
+        }
+        row = currRow ;
+        col = currCol;
+        while(row>=0 && col>=0){
+           if(board[row][col] == 'Q') 
+                return false;
+            row--; 
+            col--;
+        }
+        
+        row = currRow ;
+        col = currCol;
+        
+        while(row>=0 && col < board[0].length){
+           if(board[row][col] == 'Q') 
+                return false;
+            row--; 
+            col++;
+        }
+       return true; 
+    }
+    
+    static List < String > construct(char[][] board) {
+        List < String > res = new LinkedList < String > ();
+        for (int i = 0; i < board.length; i++) {
+            String s = new String(board[i]);
+            res.add(s);
+        }
+        return res;
+    }
+}
+
+Time : O(n^3)
+Space : O(n^2)
+
+Solution 2:
+
+class Solution {
+   
+    public List<List<String>> solveNQueens(int n) {
+        
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                board[i][j] = '.';
+        List<List<String>> ans = new ArrayList(); 
+        boolean[] col = new boolean[n];
+        boolean[] leftToRightDiag = new boolean[2*n];
+        boolean[]  rightToLeftDiag = new boolean[2*n];
+        getAllSolutions(ans,board,0,col,leftToRightDiag,rightToLeftDiag);
+        return ans;
+    }
+    
+    public  void getAllSolutions(List<List<String>> ans,char[][] board,int row,boolean[] colArr,boolean[] leftToRightDiag,boolean[]  rightToLeftDiag){
+        
+        if(row == board.length){
+            ans.add(construct(board));
+            return;
+        }
+        
+        for(int col=0;col<board[0].length;col++){
+            
+            if(!colArr[col] && !leftToRightDiag[col - row + board.length] && !rightToLeftDiag[row+col]){
+                colArr[col] = true;
+                leftToRightDiag[col - row + board.length] = true;
+                rightToLeftDiag[row+col] = true;   
+                board[row][col] = 'Q';
+                getAllSolutions(ans,board,row+1,colArr,leftToRightDiag,rightToLeftDiag);
+                board[row][col] = '.';
+                colArr[col] = false;
+                leftToRightDiag[col - row + board.length] = false;
+                rightToLeftDiag[row+col] = false; 
+            }
+        }
+        
+    }
+    
+    
+    static List < String > construct(char[][] board) {
+        List < String > res = new LinkedList < String > ();
+        for (int i = 0; i < board.length; i++) {
+            String s = new String(board[i]);
+            res.add(s);
+        }
+        return res;
+    }
+}
+
+Time : O(n^2)
+Space : O(n^2)
