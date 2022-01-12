@@ -47,3 +47,55 @@ Time : O(n*2^n)
 Space : O(n)
 
 DP approach:
+
+class Solution {
+    
+    public List<List<String>> partition(String s) {
+      
+        List<List<String>> result = new ArrayList<>();
+        boolean[][] dp = new boolean[s.length()][s.length()];
+        partitionUtil(result,0,s,new ArrayList<>(),dp);
+        return result;
+    }
+    
+    void partitionUtil(List<List<String>> result,int start,String s, List<String> tempList,boolean[][] dp){
+        
+        if(start == s.length()){
+            result.add(new ArrayList<>(tempList));
+            return;
+        }
+        for(int end=start;end<s.length();end++){
+            
+            if(s.charAt(start) == s.charAt(end) && (end-start <= 2 || dp[start+1][end-1])){
+                dp[start][end] = true;
+                tempList.add(s.substring(start,end+1));
+                partitionUtil(result,end+1,s,tempList,dp);
+                tempList.remove(tempList.size()-1);
+            }    
+            
+        }
+    }
+    
+    boolean isPalindrome(String s,int start,int end){
+        while(start < end)
+            if(s.charAt(start++) != s.charAt(end--)) return false;
+        return true;
+    }
+    
+}
+
+Time : O(n*2^n)
+Space : O(n^2)
+
+
+Time complexity derivation:
+T(n) = T(n-1)+T(n-2)+......+T(1)
+T(n-1) = T(n-2)+T(n-3)......+T(1)
+
+T(n) = [T(n-2)+T(n-3)......+T(1)] + T(n-2)+T(n-3)......+T(1)
+T(n) = 2*T(n-1)
+
+T(n) = O(2^n)
+
+For getting substrings it will take O(n) time. Hence it will be O(n*2^n)
+In backtracking approach palindromecheck function also will take o(n);
