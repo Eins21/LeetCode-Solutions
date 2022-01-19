@@ -1,0 +1,31 @@
+
+source :
+https://practice.geeksforgeeks.org/problems/activity-selection-1587115620/1#
+https://practice.geeksforgeeks.org/problems/n-meetings-in-one-room-1587115620/1#
+
+
+Solution:
+
+public static int maxMeetings(int start[], int end[], int n)
+{
+    List<int[]> list = new ArrayList<>();
+
+    for(int i=0;i<n;i++) list.add(new int[]{start[i],end[i]});
+    Collections.sort(list,(a,b) -> a[1]-b[1]);
+    int count = 1;
+
+    int prev = list.get(0)[1];
+    for(int i=1;i<list.size();i++){
+
+        if(prev < list.get(i)[0]){
+            count++;
+            prev = list.get(i)[1];
+        }        
+
+    }
+
+    return count;
+}
+
+Time : O(sort)
+Space : O(sort)
