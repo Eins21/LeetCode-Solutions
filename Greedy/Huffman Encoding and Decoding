@@ -1,0 +1,140 @@
+
+
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import static java.lang.System.out;
+
+class HuffmanCodingProblem {
+
+    private static int itr = 0;
+
+    public static void main(String[] args) {
+        /**
+         * Example 1
+         *
+         * char[] charArray = {'a', 'b', 'c', 'd', 'e', 'f'};
+         * int[] freqArray = {5, 9, 12, 13, 16, 45};
+         */
+        char[] charArray = {' ', 'a', 'e', 'f', 'h', 'i', 'm', 'n', 's', 't', 'l', 'o', 'p', 'r', 'u', 'x'};
+        int[] freqArray = {7, 4, 4, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1};
+        String stream ="111111111111111111111010010010010011011011011110111011101001000101010101011001100100010000011001110011001000100000110110101110000000011";
+
+        int length = freqArray.length;
+        PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(node -> node.frequency));
+
+        for (int itr = 0; itr < length; itr++) {
+            Node node = new Node();
+            node.setC(charArray[itr]);
+            node.setFrequency(freqArray[itr]);
+            queue.add(node);
+        }
+
+        out.println("Entered symbols with their frequencies:");
+        queue.forEach(node -> out.println(node.c + " : " + node.frequency));
+
+        createHuffmanTree(queue);
+
+        out.println("Post Huffman tree operation:");
+        queue.forEach(node -> out.println("Internal Node: " + node.frequency));
+
+        huffmanEncoder(queue);
+
+        huffmanDecoder(queue, stream);
+    }
+
+    private static void huffmanDecoder(PriorityQueue<Node> queue, String stream) {
+        out.println("Decoding Huffman Code stream:");
+
+        while (itr < stream.length()) {
+            traverseDecoderQueue(queue.peek(), stream);
+        }
+
+    }
+
+    private static void traverseDecoderQueue(Node peek, String stream) {
+        if (peek.left == null && peek.right == null) {
+            out.print(peek.c);
+        } else if (peek.left != null && stream.charAt(itr) == '0') {
+            itr++;
+            traverseDecoderQueue(peek.left, stream);
+        } else if (peek.right != null && stream.charAt(itr) == '1') {
+            itr++;
+            traverseDecoderQueue(peek.right, stream);
+        } else {
+            itr++;
+            out.println("The encoding is not present...");
+        }
+
+    }
+
+    private static void createHuffmanTree(PriorityQueue<Node> queue) {
+        while (queue.size() > 1) {
+            Node left = queue.poll();
+            Node right = queue.poll();
+            Node internalNode = new Node();
+            internalNode.setFrequency(left.getFrequency() + right.getFrequency());
+            internalNode.setLeft(left);
+            internalNode.setRight(right);
+            queue.add(internalNode);
+        }
+    }
+
+    private static void huffmanEncoder(PriorityQueue<Node> queue) {
+        out.println("Huffman Codes for Symbols:");
+        traverseEncoderQueue(queue.peek(), "");
+    }
+
+    private static void traverseEncoderQueue(Node peek, String s) {
+
+        if (peek.left == null && peek.right == null) {
+            out.println(peek.getC() + " : " + s);
+        } else {
+            if (peek.left != null) {
+                traverseEncoderQueue(peek.left, s + "0");
+            }
+            if (peek.right != null) {
+                traverseEncoderQueue(peek.right, s + "1");
+            }
+        }
+    }
+
+    private static class Node {
+        char c;
+        int frequency;
+        Node left;
+        Node right;
+
+        public Node getLeft() {
+            return left;
+        }
+
+        public void setLeft(Node left) {
+            this.left = left;
+        }
+
+        public Node getRight() {
+            return right;
+        }
+
+        public void setRight(Node right) {
+            this.right = right;
+        }
+
+        public char getC() {
+            return c;
+        }
+
+        public void setC(char c) {
+            this.c = c;
+        }
+
+        public int getFrequency() {
+            return frequency;
+        }
+
+        public void setFrequency(int frequency) {
+            this.frequency = frequency;
+        }
+    }
+}
