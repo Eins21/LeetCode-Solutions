@@ -1,0 +1,96 @@
+
+source : https://leetcode.com/problems/jump-game/
+
+
+Recursion (TLE):
+
+ public boolean canJump(int[] nums) {
+        
+	return canJumpUtil(nums,0);
+}
+
+boolean canJumpUtil(int[] nums,int index){
+
+	if(index >= nums.length-1) return true;
+
+	for(int i=1;i<=nums[index];i++){
+
+		if(canJumpUtil(nums,index+i)) return true;
+	}
+
+   return false;
+} 
+
+Top Down + memo:
+
+public boolean canJump(int[] nums) {
+        
+	Boolean[] dp = new Boolean[nums.length];
+	return canJumpUtil(nums,0,dp);
+}
+
+boolean canJumpUtil(int[] nums,int index,Boolean[] dp){
+
+	if(index >= nums.length-1) 
+		return true;
+
+	if(dp[index] != null) 
+		return dp[index];
+
+	for(int i=1;i<=nums[index];i++){
+
+		if(canJumpUtil(nums,index+i,dp)) 
+			return true;
+	}
+
+   return dp[index] = false;
+} 
+
+Time : O(N^2)
+Space : O(N)
+	
+Bottom Up
+	
+ public boolean canJump(int[] nums) {
+
+   if(nums.length == 1) return true;
+
+   Boolean[] dp = new Boolean[nums.length];
+
+	int indexToBeReached = nums.length-1;
+	boolean indexReached = false;
+
+	for(int i=nums.length-2;i>=0;i--){
+
+		for(int j=1;j<=nums[i];j++){
+
+			if(i+j >= indexToBeReached || (dp[i+j] !=null && dp[i+j])){ 
+				dp[i]=true;
+				indexToBeReached = i;
+				indexReached = true;
+				break;
+			}   
+		}
+
+		if(!indexReached) dp[i]=false;
+
+	}
+
+   return dp[0]!=null?dp[0]:false;
+}
+
+Time : O(N^2)
+Space : O(1)
+	
+Greedy
+	
+public boolean canJump(int[] nums) {
+	int max = 0;
+	for(int i=0;i<nums.length;i++){
+		if(i>max) {return false;}
+		max = Math.max(nums[i]+i,max);
+	}
+	return true;
+}
+Time : O(N)
+Space : O(1)
