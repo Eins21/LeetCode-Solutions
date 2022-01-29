@@ -1,0 +1,24 @@
+
+source : https://leetcode.com/problems/gas-station/
+
+public int canCompleteCircuit(int[] gas, int[] cost) {
+        
+      int remainingFuel = 0,remainingFuelFromStartingPoint=0,start=0;
+
+      for(int i=0;i<gas.length;i++){
+
+          remainingFuel += gas[i] - cost[i];
+          remainingFuelFromStartingPoint += gas[i] - cost[i];
+
+          if(remainingFuelFromStartingPoint < 0){
+              remainingFuelFromStartingPoint = 0;
+              start = i+1;
+          }
+
+      }
+
+      return remainingFuel < 0 ? -1:start;
+  }
+  
+  Time : O(N)
+  Space : O(N)
