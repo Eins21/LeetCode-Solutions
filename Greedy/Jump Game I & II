@@ -1,4 +1,5 @@
 
+Jump Game I
 source : https://leetcode.com/problems/jump-game/
 
 
@@ -94,3 +95,31 @@ public boolean canJump(int[] nums) {
 }
 Time : O(N)
 Space : O(1)
+
+
+Jump Game II
+source : https://leetcode.com/problems/jump-game-ii/
+
+ public int jump(int[] nums) {
+       
+   return jump(0,nums);        
+ }
+private int jump(int p, int[] nums) {
+	int n = nums.length;
+	if(p>=n-1)
+	    return 0;
+	if(p+nums[p]>=n-1)
+	    return 1;
+	int max=0, steps=0;
+	for(int i=1;i<=nums[p];i++) {
+	    int jump2 = i+nums[p+i];
+	    if(jump2>max) {
+		max = jump2;
+		steps = i;
+	    }   
+}
+  return 1+jump(p+steps, nums);
+}
+
+Time: O(N)
+Space O(N)
